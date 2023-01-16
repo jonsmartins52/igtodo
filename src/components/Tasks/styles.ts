@@ -12,6 +12,10 @@ export const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginBottom: 20,
   },
+  headerText: {
+    fontSize: 14,
+    fontWeight: "bold",
+  },
   createText: {
     fontSize: 14,
     fontWeight: "bold",

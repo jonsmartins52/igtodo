@@ -1,5 +1,6 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import Feater from "@expo/vector-icons/Feather";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 import { Todo } from "../../types/Todo";
 import { styles } from "./styles";
@@ -14,7 +15,13 @@ export default function TodoItem() {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.unchecked} />
+      {task.done ? (
+        <TouchableOpacity>
+          <Ionicons name="checkmark-circle" size={24} color="#8284FA" />
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity style={styles.unchecked} />
+      )}
 
       <Text style={styles.description}>Coletar 7 Frost Crystals</Text>
 
