@@ -19,6 +19,11 @@ export default function Home() {
     setTaskName("");
   }
 
+  function handleDeleteTask(id: number) {
+    console.log("aqui");
+    setTasks(tasks.filter((task) => task.id !== id));
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.header}></View>
@@ -41,7 +46,7 @@ export default function Home() {
         </TouchableOpacity>
       </View>
 
-      <Tasks todos={tasks} />
+      <Tasks todos={tasks} onDelete={handleDeleteTask} />
     </View>
   );
 }

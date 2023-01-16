@@ -6,7 +6,12 @@ import { Todo } from "../../types/Todo";
 import { styles } from "./styles";
 import { useState } from "react";
 
-export default function TodoItem() {
+interface TodoItemProps {
+  todo: Todo;
+  onDelete: () => void;
+}
+
+export default function TodoItem({ todo, onDelete }: TodoItemProps) {
   const [task, setTask] = useState<Todo>({
     id: 0,
     description: "",
@@ -23,9 +28,9 @@ export default function TodoItem() {
         <TouchableOpacity style={styles.unchecked} />
       )}
 
-      <Text style={styles.description}>Coletar 7 Frost Crystals</Text>
+      <Text style={styles.description}>{todo.description}</Text>
 
-      <TouchableOpacity style={styles.iconContainer}>
+      <TouchableOpacity style={styles.iconContainer} onPress={onDelete}>
         <Feater name="trash-2" size={20} color="#808080" />
       </TouchableOpacity>
     </View>
