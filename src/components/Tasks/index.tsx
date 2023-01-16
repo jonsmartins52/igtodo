@@ -6,9 +6,11 @@ import EmptyList from "../EmptyList";
 import TodoItem from "../TodoItem";
 import { styles } from "./styles";
 
-export default function Tasks() {
-  const [tasks, setTasks] = useState<Todo[]>([]);
+interface TodoItemProps {
+  todos: Todo[];
+}
 
+export default function Tasks({ todos }: TodoItemProps) {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -19,7 +21,7 @@ export default function Tasks() {
       </View>
 
       <FlatList
-        data={tasks}
+        data={todos}
         keyExtractor={(item) => String(item.id)}
         renderItem={({ item }) => <TodoItem />}
         ListEmptyComponent={() => <EmptyList />}
