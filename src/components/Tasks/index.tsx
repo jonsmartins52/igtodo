@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { View, Text, FlatList } from "react-native";
 
 import { Todo } from "../../types/Todo";
@@ -11,13 +11,33 @@ interface TaskProps {
   onDelete: (id: number) => void;
 }
 
+interface HeaderProps {
+  tasksCreated: number;
+  tasksDone: number;
+}
+
 export default function Tasks({ todos, onDelete }: TaskProps) {
+  const [headerStats, setHeaderStats] = useState<HeaderProps>({
+    tasksCreated: 0,
+    tasksDone: 0,
+  });
+
+  useEffect(() => {
+    const data = {
+      tasksCreated: todos.length,
+      tasksDone: todos.filter((todo) => todo.done).length,
+    };
+    setHeaderStats(data);
+  }, [todos]);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={[styles.headerText, { color: "#4EA8DE" }]}>Criadas 0</Text>
+        <Text style={[styles.headerText, { color: "#4EA8DE" }]}>
+          Criadas {headerStats.tasksCreated}
+        </Text>
         <Text style={[styles.headerText, { color: "#8284FA" }]}>
-          Concluídas 0
+          Concluídas {headerStats.tasksDone}
         </Text>
       </View>
 
