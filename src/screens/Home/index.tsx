@@ -1,5 +1,6 @@
-import { Text, View, TextInput, TouchableOpacity, Image } from "react-native";
+import { Text, View, TextInput, TouchableOpacity, Alert } from "react-native";
 import SimpliLineIcons from "@expo/vector-icons/SimpleLineIcons";
+import uuid from "react-native-uuid";
 
 import { useState } from "react";
 
@@ -11,25 +12,32 @@ import Logo from "../../components/Logo";
 export default function Home() {
   const [tasks, setTasks] = useState<Todo[]>([]);
   const [taskName, setTaskName] = useState("");
+  const [isFocused, setIsFocused] = useState(false);
 
   function handleAddTask(description: string) {
-    if (!description) return;
-
-    const taskLength = tasks.length;
-
-    for (let task of tasks) {
-      if (task.id === taskLength + 1) return;
+    if (!description) {
+      Alert.alert("Tarefa vazia.", "A tarefa não pode estar vazia.");
+      return;
     }
 
-    setTasks([...tasks, { id: taskLength + 1, description, done: false }]);
+    setTasks([...tasks, { id: uuid.v4() as string, description, done: false }]);
     setTaskName("");
   }
 
-  function handleDeleteTask(id: number) {
-    setTasks(tasks.filter((task) => task.id !== id));
+  function handleDeleteTask(id: string) {
+    Alert.alert("Excluir tarefa", "Deseja excluir tarefa?", [
+      {
+        text: "Sim",
+        onPress: () => setTasks(tasks.filter((task) => task.id !== id)),
+      },
+      {
+        text: "Não",
+        style: "cancel",
+      },
+    ]);
   }
 
-  function handleToggleTask(id: number) {
+  function handleToggleTask(id: string) {
     const taskToUpdate = tasks.find((task) => task.id === id);
     if (!taskToUpdate) return;
 
@@ -48,10 +56,15 @@ export default function Home() {
 
       <View style={styles.inputContainer}>
         <TextInput
-          style={styles.input}
+          style={[
+            styles.input,
+            { borderColor: isFocused ? "#5E60CE" : "#0D0D0D" },
+          ]}
           placeholder="Adicione uma nova tarefa"
           placeholderTextColor="#808080"
           onChangeText={setTaskName}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
           value={taskName}
         />
         <TouchableOpacity
