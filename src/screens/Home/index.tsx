@@ -1,27 +1,41 @@
+import { useState, useEffect } from "react";
 import { Text, View, TextInput, TouchableOpacity, Alert } from "react-native";
 import SimpliLineIcons from "@expo/vector-icons/SimpleLineIcons";
 import uuid from "react-native-uuid";
-
-import { useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { styles } from "./styles";
 import Tasks from "../../components/Tasks";
 import { Todo } from "../../types/Todo";
 import Logo from "../../components/Logo";
+import storage from "../../services/storage";
 
 export default function Home() {
   const [tasks, setTasks] = useState<Todo[]>([]);
   const [taskName, setTaskName] = useState("");
   const [isFocused, setIsFocused] = useState(false);
 
-  function handleAddTask(description: string) {
+  useEffect(() => {
+    storage.getTasks().then((response) => {
+      if (!response) return;
+      setTasks(response);
+    });
+  }, []);
+
+  async function handleAddTask(description: string) {
     if (!description) {
       Alert.alert("Tarefa vazia.", "A tarefa não pode estar vazia.");
       return;
     }
 
-    setTasks([...tasks, { id: uuid.v4() as string, description, done: false }]);
+    const newTasks = [
+      ...tasks,
+      { id: uuid.v4() as string, description, done: false },
+    ];
+    setTasks(newTasks);
     setTaskName("");
+
+    await storage.storeTask(newTasks);
   }
 
   function handleDeleteTask(id: string) {
