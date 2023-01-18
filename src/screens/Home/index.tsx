@@ -1,4 +1,4 @@
-import { Text, View, TextInput, TouchableOpacity } from "react-native";
+import { Text, View, TextInput, TouchableOpacity, Image } from "react-native";
 import SimpliLineIcons from "@expo/vector-icons/SimpleLineIcons";
 
 import { useState } from "react";
@@ -6,6 +6,7 @@ import { useState } from "react";
 import { styles } from "./styles";
 import Tasks from "../../components/Tasks";
 import { Todo } from "../../types/Todo";
+import Logo from "../../components/Logo";
 
 export default function Home() {
   const [tasks, setTasks] = useState<Todo[]>([]);
@@ -41,7 +42,9 @@ export default function Home() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}></View>
+      <View style={styles.header}>
+        <Logo />
+      </View>
 
       <View style={styles.inputContainer}>
         <TextInput
