@@ -15,13 +15,28 @@ export default function Home() {
     if (!description) return;
 
     const taskLength = tasks.length;
+
+    for (let task of tasks) {
+      if (task.id === taskLength + 1) return;
+    }
+
     setTasks([...tasks, { id: taskLength + 1, description, done: false }]);
     setTaskName("");
   }
 
   function handleDeleteTask(id: number) {
-    console.log("aqui");
     setTasks(tasks.filter((task) => task.id !== id));
+  }
+
+  function handleToggleTask(id: number) {
+    const taskToUpdate = tasks.find((task) => task.id === id);
+    if (!taskToUpdate) return;
+
+    taskToUpdate.done = !taskToUpdate.done;
+
+    setTasks(
+      tasks.map((task) => (task.id === taskToUpdate.id ? taskToUpdate : task))
+    );
   }
 
   return (
@@ -46,7 +61,11 @@ export default function Home() {
         </TouchableOpacity>
       </View>
 
-      <Tasks todos={tasks} onDelete={handleDeleteTask} />
+      <Tasks
+        todos={tasks}
+        onDelete={handleDeleteTask}
+        onToggle={handleToggleTask}
+      />
     </View>
   );
 }

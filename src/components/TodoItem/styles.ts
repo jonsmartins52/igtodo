@@ -34,4 +34,11 @@ export const styles = StyleSheet.create({
     width: 32,
     height: 32,
   },
+  textDone: {
+    color: "#808080",
+    textDecorationLine: "line-through",
+    textAlign: "left",
+    fontSize: 14,
+    width: 235,
+  },
 });

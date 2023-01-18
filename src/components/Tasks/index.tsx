@@ -9,6 +9,7 @@ import { styles } from "./styles";
 interface TaskProps {
   todos: Todo[];
   onDelete: (id: number) => void;
+  onToggle: (id: number) => void;
 }
 
 interface HeaderProps {
@@ -16,7 +17,7 @@ interface HeaderProps {
   tasksDone: number;
 }
 
-export default function Tasks({ todos, onDelete }: TaskProps) {
+export default function Tasks({ todos, onDelete, onToggle }: TaskProps) {
   const [headerStats, setHeaderStats] = useState<HeaderProps>({
     tasksCreated: 0,
     tasksDone: 0,
@@ -45,7 +46,11 @@ export default function Tasks({ todos, onDelete }: TaskProps) {
         data={todos}
         keyExtractor={(item) => String(item.id)}
         renderItem={({ item }) => (
-          <TodoItem todo={item} onDelete={() => onDelete(item.id)} />
+          <TodoItem
+            todo={item}
+            onDelete={() => onDelete(item.id)}
+            onToggle={() => onToggle(item.id)}
+          />
         )}
         ListEmptyComponent={() => <EmptyList />}
       />
