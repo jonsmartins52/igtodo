@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { Text, View, TextInput, TouchableOpacity, Alert } from "react-native";
 import SimpliLineIcons from "@expo/vector-icons/SimpleLineIcons";
 import uuid from "react-native-uuid";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { styles } from "./styles";
 import Tasks from "../../components/Tasks";
@@ -42,7 +41,7 @@ export default function Home() {
     Alert.alert("Excluir tarefa", "Deseja excluir tarefa?", [
       {
         text: "Sim",
-        onPress: () => setTasks(tasks.filter((task) => task.id !== id)),
+        onPress: () => removeTask(id),
       },
       {
         text: "Não",
@@ -51,15 +50,23 @@ export default function Home() {
     ]);
   }
 
-  function handleToggleTask(id: string) {
+  async function removeTask(id: string) {
+    const newTasks = tasks.filter((task) => task.id !== id);
+    setTasks(newTasks);
+    storage.storeTask(newTasks);
+  }
+
+  async function handleToggleTask(id: string) {
     const taskToUpdate = tasks.find((task) => task.id === id);
     if (!taskToUpdate) return;
 
     taskToUpdate.done = !taskToUpdate.done;
-
-    setTasks(
-      tasks.map((task) => (task.id === taskToUpdate.id ? taskToUpdate : task))
+    const newTasks = tasks.map((task) =>
+      task.id === taskToUpdate.id ? taskToUpdate : task
     );
+
+    setTasks(newTasks);
+    await storage.storeTask(newTasks);
   }
 
   return (
