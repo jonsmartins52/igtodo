@@ -1,5 +1,12 @@
 import { useState, useEffect } from "react";
-import { Text, View, TextInput, TouchableOpacity, Alert } from "react-native";
+import {
+  Text,
+  View,
+  TextInput,
+  TouchableOpacity,
+  Alert,
+  Keyboard,
+} from "react-native";
 import SimpliLineIcons from "@expo/vector-icons/SimpleLineIcons";
 import uuid from "react-native-uuid";
 
@@ -87,6 +94,7 @@ export default function Home() {
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
           value={taskName}
+          onSubmitEditing={Keyboard.dismiss}
         />
         <TouchableOpacity
           style={styles.addButton}
